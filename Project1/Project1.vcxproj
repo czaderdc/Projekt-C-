@@ -18,6 +18,24 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BazaPracownikow.h" />
+    <ClInclude Include="Dyrektor.h" />
+    <ClInclude Include="Fizyczny.h" />
+    <ClInclude Include="MenedzerPlikow.h" />
+    <ClInclude Include="Pracownik.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BazaPracownikow.cpp" />
+    <ClCompile Include="Dyrektor.cpp" />
+    <ClCompile Include="Fizyczny.cpp" />
+    <ClCompile Include="MenedzerPlikow.cpp" />
+    <ClCompile Include="Pracownik.cpp" />
+    <ClCompile Include="Program.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{449BEF26-E5F8-411B-9747-80698DF92FE0}</ProjectGuid>
@@ -114,8 +132,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
