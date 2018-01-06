@@ -10,23 +10,23 @@ void BazaPracownikow::resetujTablicePracownikow()
 {
 	liczbaPracownikow = 0;
 	idPracownika = 0;
-	delete[] Pracownicy;
-	Pracownicy = nullptr;
+	delete[] pracownicy;
+	pracownicy = nullptr;
 }
 const Pracownik& BazaPracownikow::szukajPoId(int Id) const
 {
 
 	for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 	{
-		if (Pracownicy[i].pobierzID() == Id)
-			return Pracownicy[i];
+		if (pracownicy[i].pobierzID() == Id)
+			return pracownicy[i];
 	}
 }
 bool BazaPracownikow::czyJestDyrektor()
 {
 	for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 	{
-		if (Pracownicy[i].pobierzPozycje() == "Dyrektor")
+		if (pracownicy[i].pobierzPozycje() == "Dyrektor")
 			return true;
 	}
 
@@ -50,9 +50,9 @@ void BazaPracownikow::realokujTabliceUsuwam(Pracownik& p)
 	size_t iluSkopiowac = liczbaPracownikowGet() - 1;
 	if (iluSkopiowac == 0)
 	{
-		delete[] Pracownicy;
+		delete[] pracownicy;
 		--liczbaPracownikow;
-		Pracownicy = nullptr;
+		pracownicy = nullptr;
 	}
 	else
 	{
@@ -62,24 +62,24 @@ void BazaPracownikow::realokujTabliceUsuwam(Pracownik& p)
 		//zmienna pomocnicza j, bo continue "gubi" jedna wartosc po pominieciu danego pracownika
 		for (size_t i = 0, j = 0; i <= iluSkopiowac; i++)
 		{
-			if (Pracownicy[i] == p)
+			if (pracownicy[i] == p)
 			{
 				//w sumie to niepotrzebne zastapic zmienna iluSkopiowac
 				--liczbaPracownikow;
 				continue;
 			}
-			temp[j++] = Pracownicy[i];
+			temp[j++] = pracownicy[i];
 		}
 		////resetuje wskaznik jesli wczesniej nie byl pusty i zwalnia pamiec aby moc zaoolokowac wieksza tablice
-		if (Pracownicy != nullptr)
+		if (pracownicy != nullptr)
 		{
-			delete[]Pracownicy;
-			Pracownicy = nullptr;
+			delete[]pracownicy;
+			pracownicy = nullptr;
 		}
-		Pracownicy = new Pracownik[liczbaPracownikowGet()];
+		pracownicy = new Pracownik[liczbaPracownikowGet()];
 		for (size_t i = 0; i <liczbaPracownikowGet(); i++)
 		{
-			Pracownicy[i] = temp[i];
+			pracownicy[i] = temp[i];
 		}
 		//-1 bo indeksowane w tablicy elementy sa od zera
 		delete[]temp;
@@ -105,23 +105,23 @@ void BazaPracownikow::realokujTablice(Pracownik& p, bool& failed)
 
 			for (size_t i = 0; i < liczbaPracownikowGet() - 1; i++)
 			{
-				temp[i] = Pracownicy[i];
+				temp[i] = pracownicy[i];
 			}
 			////resetuje wskaznik jesli wczesniej nie byl pusty i zwalnia pamiec aby moc zaoolokowac wieksza tablice
-			if (Pracownicy != nullptr)
+			if (pracownicy != nullptr)
 			{
-				delete[]Pracownicy;
-				Pracownicy = nullptr;
+				delete[]pracownicy;
+				pracownicy = nullptr;
 			}
 			////alokuje pamiec dla starych + dla nowego
-			Pracownicy = new Pracownik[liczbaPracownikowGet()];
+			pracownicy = new Pracownik[liczbaPracownikowGet()];
 			//przypisujemy stare elementy do <n-1, bo n-1 element jest zarezerwowany dla nowego
 			for (size_t i = 0; i < liczbaPracownikowGet() - 1; i++)
 			{
-				Pracownicy[i] = temp[i];
+				pracownicy[i] = temp[i];
 			}
 			//-1 bo indeksowane w tablicy elementy sa od zera
-			Pracownicy[liczbaPracownikowGet() - 1] = p;
+			pracownicy[liczbaPracownikowGet() - 1] = p;
 			delete[]temp;
 			//niby dobry zwyczaj programistyczny
 			temp = nullptr;
@@ -129,8 +129,8 @@ void BazaPracownikow::realokujTablice(Pracownik& p, bool& failed)
 		//jest pierwszym pracownikiem
 		else
 		{
-			Pracownicy = new Pracownik[1];
-			Pracownicy[0] = p;
+			pracownicy = new Pracownik[1];
+			pracownicy[0] = p;
 		}
 	}
 	catch (std::bad_alloc&e)
@@ -155,7 +155,7 @@ void BazaPracownikow::dodajPracownikaTablica(Pracownik & p, bool& failed)
 	{
 		for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 		{
-			if (p == Pracownicy[i])
+			if (p == pracownicy[i])
 			{
 				std::cout << "\nPracownik o podanych danych juz istnieje. Moze chcesz uaktualnic jego dane?\n";
 				std::string wybor = "";
@@ -179,7 +179,7 @@ int BazaPracownikow::sumaZarobkowPracownikow() const
 	int wynik = 0;
 	for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 	{
-		wynik += Pracownicy[i].pobierzZarobki();
+		wynik += pracownicy[i].pobierzZarobki();
 	}
 
 	return wynik;
@@ -208,9 +208,9 @@ void BazaPracownikow::usunPracownika(int IDpracownika)
 {
 	for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 	{
-		if (Pracownicy[i].pobierzID() == IDpracownika)
+		if (pracownicy[i].pobierzID() == IDpracownika)
 		{
-			realokujTabliceUsuwam(Pracownicy[i]);
+			realokujTabliceUsuwam(pracownicy[i]);
 		}
 	}
 }
@@ -219,7 +219,7 @@ int BazaPracownikow::sumaZarobkowPracownikow()
 	int sumaZarobkow = 0;
 	for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 	{
-		sumaZarobkow += Pracownicy[i].pobierzZarobki();
+		sumaZarobkow += pracownicy[i].pobierzZarobki();
 	}
 	return sumaZarobkow;
 }
@@ -231,9 +231,9 @@ std::string BazaPracownikow::operator[](int id) const
 		return PUSTYSTRING;
 	for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 	{
-		if (Pracownicy[i].pobierzID() == id)
+		if (pracownicy[i].pobierzID() == id)
 		{
-			return Pracownicy[i].pobierzNazwisko();
+			return pracownicy[i].pobierzNazwisko();
 		}
 	}
 	return PUSTYSTRING;
@@ -250,7 +250,7 @@ std::string BazaPracownikow::operator[](std::string nazwisko) const
 	{
 		for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 		{
-			if (Pracownicy[i].pobierzNazwisko() == nazwisko)
+			if (pracownicy[i].pobierzNazwisko() == nazwisko)
 			{
 				return nazwisko;
 			}
@@ -265,7 +265,7 @@ std::string BazaPracownikow::operator[](std::string nazwisko) const
 //podczas dodawania pracownika
 void BazaPracownikow::wyswietlPracownikowTablica()
 {
-	if (liczbaPracownikowGet() == 0 || Pracownicy == nullptr)
+	if (liczbaPracownikowGet() == 0 || pracownicy == nullptr)
 	{
 		std::cout << "\nW tablicy nie ma zapisanych zadnych pracownikow!\n";
 	}
@@ -275,31 +275,32 @@ void BazaPracownikow::wyswietlPracownikowTablica()
 		size_t kolumnaNazwisko = 20;
 		size_t kolumnaZarobki = 20;
 		size_t kolumnaPozycja = 20;
+		size_t kolumnaId = 10;
 		for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 		{
-			if (Pracownicy[i].imieLength() > kolumnaImie)
+			if (pracownicy[i].imieLength() > kolumnaImie)
 			{
-				kolumnaImie = Pracownicy[i].imieLength();
+				kolumnaImie = pracownicy[i].imieLength();
 			}
-			if (Pracownicy[i].nazwiskoLength() > kolumnaNazwisko)
+			if (pracownicy[i].nazwiskoLength() > kolumnaNazwisko)
 			{
-				kolumnaNazwisko = Pracownicy[i].nazwiskoLength();
+				kolumnaNazwisko = pracownicy[i].nazwiskoLength();
 			}
-			if (Pracownicy[i].pobierzPozycje().length() > kolumnaZarobki)
+			if (pracownicy[i].pobierzPozycje().length() > kolumnaZarobki)
 			{
-				kolumnaZarobki = Pracownicy[i].pobierzPozycje().length();
+				kolumnaZarobki = pracownicy[i].pobierzPozycje().length();
 			}
 		}
 
 		for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 		{
-			if (std::to_string(Pracownicy[i].pobierzZarobki()).length() + 4 > kolumnaZarobki)
-				kolumnaZarobki = std::to_string((Pracownicy[i].pobierzZarobki())).length() + 4; //+4 dla napisu PLN
+			if (std::to_string(pracownicy[i].pobierzZarobki()).length() + 4 > kolumnaZarobki)
+				kolumnaZarobki = std::to_string((pracownicy[i].pobierzZarobki())).length() + 4; //+4 dla napisu PLN
 		}
 
 		std::string linia = "";
 		//zastosowa stream format w celu wyrownania linii tekstu
-		for (size_t i = 0; i < (kolumnaImie + kolumnaNazwisko + kolumnaZarobki + (std::string("Imie")).length() + (std::string("Nazwisko")).length() + (std::string("Zarobki")).length()) + (std::string("Pozycja")).length(); i++)
+		for (size_t i = 0; i < (kolumnaImie + kolumnaNazwisko + kolumnaZarobki + (std::string("Imie")).length() + (std::string("Nazwisko")).length() + (std::string("Zarobki")).length()) + (std::string("Pozycja")).length() + 20; i++)
 		{
 			linia += "-";
 		}
@@ -315,7 +316,9 @@ void BazaPracownikow::wyswietlPracownikowTablica()
 		std::cout.width(kolumnaPozycja);
 		std::cout << std::left << " Pozycja" << " |";
 		std::cout.width(kolumnaZarobki);
-		std::cout << std::left << " Zarobki" << " |" << std::endl;
+		std::cout << std::left << " Zarobki" << " |";
+		std::cout.width(3);//na id 6
+		std::cout << std::left << "ID" << " |" << std::endl;
 		std::cout << linia << std::endl;
 
 
@@ -327,16 +330,19 @@ void BazaPracownikow::wyswietlPracownikowTablica()
 		{
 			std::cout << " |";
 			std::cout.width(kolumnaImie);
-			std::cout << std::left << Pracownicy[i].pobierzImie();
+			std::cout << std::left << pracownicy[i].pobierzImie();
 			std::cout << " |";
 			std::cout.width(kolumnaNazwisko);
-			std::cout << std::left << Pracownicy[i].pobierzNazwisko();
+			std::cout << std::left << pracownicy[i].pobierzNazwisko();
 			std::cout << " |";
 			std::cout.width(kolumnaPozycja);
-			std::cout << std::left << Pracownicy[i].pobierzPozycje();
+			std::cout << std::left << pracownicy[i].pobierzPozycje();
 			std::cout << " |";
 			std::cout.width(kolumnaZarobki);
-			std::cout << std::to_string(Pracownicy[i].pobierzZarobki()) + " PLN";
+			std::cout << std::to_string(pracownicy[i].pobierzZarobki()) + " PLN";
+			std::cout << " |";
+			std::cout.width(3);
+			std::cout << std::to_string(pracownicy[i].pobierzID());
 			std::cout << " |" << std::endl;
 			std::cout << linia << std::endl;
 
@@ -347,6 +353,6 @@ void BazaPracownikow::wyswietlPracownikowTablica()
 
 BazaPracownikow::~BazaPracownikow()
 {
-	delete[] Pracownicy;
-	Pracownicy = nullptr;
+	delete[] pracownicy;
+	pracownicy = nullptr;
 }

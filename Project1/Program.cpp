@@ -37,7 +37,6 @@ bool hasloPanelDyrektora(string& haslo, char tryb);
 void sukces();
 void porazka();
 
-
 bool pierwszeUruchomienie = true;
 bool czySukces = false;
 bool czyKomunikaty = false;
@@ -134,67 +133,103 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 			}
 			case 2:
 			{
-				
+					czyKomunikaty = true;
 				    cout << "\nPodaj ID pracownika: ";
-			
-					sprawdzanieWyboruUzytkownika(wybor, czySukces, bazaDanych.liczbaPracownikowGet());
-				
-					cout << "\nCzy na pewno chcesz nadpisac dane: ";
-					cout << bazaDanych.szukajPoId(wybor).pobierzImie() + " " + bazaDanych.szukajPoId(wybor).pobierzNazwisko() << endl << "[1]TAK\n[2]NIE" << endl;
-					int wybor2 = 0;
-					sprawdzanieWyboruUzytkownika(wybor2, czySukces, 2);
-
-
-					if (wybor2 == 1)
+					
+					string id;
+					cin >> id;
+					bool r = true;
+					while (r = !walidatorStringNaInt(id))
 					{
-						bazaDanych.usunPracownika(wybor);
-						string imie, nazwisko, zarobki, pozycja;
-						cout << endl << "Wprowadz nowe dane dla tego pracownika:";
-						while (!walidatorStringNaInt(zarobki))
-						{
-							cout << endl << "Wprowadz prawidlowa liczbe calkowita: ";
-							cin >> zarobki;
-						}
-						wprowadzDane(imie, nazwisko, zarobki);
-						Pracownik zedytowany(imie, nazwisko, stoi(zarobki), bazaDanych.nadajID());
-						bazaDanych.dodajPracownikaTablica(zedytowany, czySukces);
+						cout << endl << "Jesli nie wiesz jakie jest jego ID, wyswietl liste pracownikow w glownym menu [6]!" << endl;
+						czySukces = false;
+						break;
+						
 					}
-					else if (wybor2 == 2)
+
+					if (r == true)
 					{
 						break;
 					}
 
+					if (bazaDanych[stoi(id)] == PUSTYSTRING)
+					{
+						czySukces = false;
+						cout << endl << "Nie ma pracownika o takim id!!" << endl;
+						break;
+					}
+					else
+					{
 
-					czyKomunikaty = true;
+						cout << "\nCzy na pewno chcesz nadpisac dane: ";
+						cout << bazaDanych.szukajPoId(wybor).pobierzImie() + " " + bazaDanych.szukajPoId(wybor).pobierzNazwisko() << endl << "[1]TAK\n[2]NIE" << endl;
+						int idPracownikaEdytowanego = wybor;
+						sprawdzanieWyboruUzytkownika(wybor, czySukces, 2);
 
-				
-				break;
+
+						if (wybor == 1)
+						{
+							bazaDanych.usunPracownika(idPracownikaEdytowanego);
+							string imie, nazwisko, zarobki, pozycja;
+							cout << endl << "Wprowadz nowe dane dla tego pracownika:";
+							wprowadzDane(imie, nazwisko, zarobki);
+							Pracownik zedytowany(imie, nazwisko, stoi(zarobki), bazaDanych.nadajID());
+							bazaDanych.dodajPracownikaTablica(zedytowany, czySukces);
+						}
+						else if (wybor == 2)
+						{
+							break;
+						}
+
+
+						
+
+
+						break;
+					}
 
 			}
 			case 3:
 			{
+				czyKomunikaty = true;
 				if (bazaDanych.liczbaPracownikowGet() == 0)
 				{
 					cout << endl << "Baza pracownikow jest pusta!" << endl;
 					czySukces = false;
 				}
 				cout << endl << "Podaj ID pracownika ktorego chcesz usunac: ";
-				sprawdzanieWyboruUzytkownika(wybor, czySukces, bazaDanych.liczbaPracownikowGet());
-				
-				string wynik = bazaDanych[wybor];
-				cout << endl << "Czy na pewno chcesz usunac: " + wynik + "?"<<std::endl;
-				cout << "\n[1]TAK\n[2]NIE\n";
-				sprawdzanieWyboruUzytkownika(wybor, czySukces, 2);
-				if (wybor == 1)
+				string id;
+				cin >> id;
+				while (!walidatorStringNaInt(id))
 				{
-					bazaDanych.usunPracownika(wybor);
+					cout << endl << "Jesli nie wiesz jakie jest jego ID, wyswietl liste pracownikow w glownym menu [6]!";
+					czySukces = false;
+					break;
+				}
+
+				if (bazaDanych[stoi(id)] == PUSTYSTRING)
+				{
+					czySukces = false;
+					cout << endl << "Nie ma pracownika o takim id!!" << endl;
+					break;
 				}
 				else
 				{
+					cout << endl << "Czy na pewno chcesz usunac: " + bazaDanych.szukajPoId(stoi(id)).pobierzImie() + " "+ bazaDanych.szukajPoId(stoi(id)).pobierzNazwisko() + " ?" << std::endl;
+					cout << "\n[1]TAK\n[2]NIE\n";
+					sprawdzanieWyboruUzytkownika(wybor, czySukces, 2);
+					if (wybor == 1)
+					{
+						bazaDanych.usunPracownika(stoi(id));
+						//lPracownikowNaPoczatku--;
+					}
+					else
+					{
+						break;
+					}
+					
 					break;
 				}
-				czyKomunikaty = true;
-				break;
 			}
 			case 4:
 			{
@@ -343,7 +378,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					menedzer.zapiszDoPliku(czySukces, bazaDanych);
 				}
 
-				if (bazaDanych.Pracownicy != nullptr)
+				if (bazaDanych.pobierzPracownikow() != nullptr)
 				{
 					bazaDanych.~BazaPracownikow();
 				}
@@ -502,6 +537,7 @@ bool walidatorStringNaInt(string& zarobki)
 	catch (invalid_argument& arg)
 	{
 		cout << endl << "Wprowadzono niepoprawny znak!";
+		return false;
 	}
 	return true;
 }

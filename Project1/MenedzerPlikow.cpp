@@ -164,7 +164,7 @@ void MenedzerPlikow::zapiszDoPliku(bool & czySukces, BazaPracownikow& baza)
 		return;
 
 	}
-	if (baza.liczbaPracownikowGet() == 0 || baza.Pracownicy == nullptr)
+	if (baza.liczbaPracownikowGet() == 0 || baza.pobierzPracownikow() == nullptr)
 	{
 		std::cerr << "\nNie ma czego zapisac do pliku!\n";
 		czySukces = false;
@@ -276,14 +276,16 @@ void MenedzerPlikow::wczytajDanezPliku(BazaPracownikow& baza, bool& failed)
 		{
 			if (czyDyrektor)
 			{
-				Dyrektor odczyt(imie, nazwisko, zarobki, baza.nadajID(), pozycjaPracownika);
+				Dyrektor odczyt(imie, nazwisko, zarobki, id, pozycjaPracownika);
 				baza.dodajPracownikaTablica(odczyt, failed);
 				baza.dyrektor_ = odczyt;
+				baza.aktualizujId(id);
 			}
 			else
 			{
-				Pracownik odczyt(imie, nazwisko, zarobki, baza.nadajID(), pozycjaPracownika);
+				Pracownik odczyt(imie, nazwisko, zarobki, id, pozycjaPracownika);
 				baza.dodajPracownikaTablica(odczyt, failed);
+				baza.aktualizujId(id);
 			}
 			
 		}

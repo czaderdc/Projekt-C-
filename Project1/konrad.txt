@@ -1,24 +1,14 @@
 ID: 1
-Imie pracownika: fdsfdfds
-Nazwisko pracownika: fsdfdsfds
-Zarobki pracownika: 45434535
-Pozycja pracownika: Pracownik Fizyczny
-ID: 2
 Imie pracownika: fd
 Nazwisko pracownika: fdsf
 Zarobki pracownika: 343
 Pozycja pracownika: Fizyczny
-ID: 3
+ID: 2
 Imie pracownika: fsdfdsffsdfds
 Nazwisko pracownika: fsdfdsf
 Zarobki pracownika: 34343
 Pozycja pracownika: Fizyczny
 ID: 4
-Imie pracownika: Konrad
-Nazwisko pracownika: Czado
-Zarobki pracownika: 23
-Pozycja pracownika: Fizyczny
-ID: 5
 Imie pracownika: aaa
 Nazwisko pracownika: aaaa
 Zarobki pracownika: 222

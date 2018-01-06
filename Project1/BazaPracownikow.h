@@ -8,25 +8,22 @@
 class BazaPracownikow
 {
 private:
-	//czy aby na pewno powienienem to trzymac na stercie?
-	//std::vector<Pracownik>* ListaPracownikow;
 	int idPracownika;
 	size_t liczbaPracownikow;
-	//	stdLL
+	Pracownik* pracownicy = nullptr;
 public:
+	BazaPracownikow();
 	Dyrektor dyrektor_;
+	void aktualizujId(int id) { idPracownika = id; }
 	Dyrektor& pobierzDyrektora() { return dyrektor_; }
 	void resetujTablicePracownikow();
 	const Pracownik& szukajPoId (int Id)const;
 	bool czyJestDyrektor();
 	void dodajDyrektora(const Dyrektor& dyrektor);
-	int nadajID() { return ++idPracownika; }
-	BazaPracownikow();
+	int nadajID() { return ++idPracownika; }	
 	size_t liczbaPracownikowGet() const { return liczbaPracownikow; }
-	Pracownik* Pracownicy = nullptr;
-	const Pracownik* pobierzPracownikow()const { return Pracownicy; }
+	const Pracownik* pobierzPracownikow()const { return pracownicy; }
 	int sumaZarobkowPracownikow()const;
-	//referencje przekazuje aby sledzic ID pracownika, co swiadczy o ilosc pracownikow aby zarezerwowac na biezaco odpowiednia ilosc pamieci
 	void realokujTablice(Pracownik&p, bool& failed);
 	void dodajPracownikaTablica(Pracownik &p, bool& failed);
 	std::string przytnijOpis(std::string opis, std::string liniaTekstu, size_t& pozycja);

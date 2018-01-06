@@ -12,6 +12,6 @@ public:
 	void dodajPodleglegoPracownika(const Pracownik& pracownik);
 	virtual ~Dyrektor();
 private:
-	std::vector<Pracownik> podlegliPracownicy;
+	std::vector<Pracownik> podleglipracownicy;
 };
 
