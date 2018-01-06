@@ -174,7 +174,7 @@ void BazaPracownikow::dodajPracownikaTablica(Pracownik & p, bool& failed)
 
 
 
-int BazaPracownikow::sumaZarobkowPracownikow()
+int BazaPracownikow::sumaZarobkowPracownikow() const
 {
 	int wynik = 0;
 	for (size_t i = 0; i < liczbaPracownikowGet(); i++)
@@ -214,7 +214,7 @@ void BazaPracownikow::usunPracownika(int IDpracownika)
 		}
 	}
 }
-int BazaPracownikow::sumaZarobkowPracownikow() const
+int BazaPracownikow::sumaZarobkowPracownikow()
 {
 	int sumaZarobkow = 0;
 	for (size_t i = 0; i < liczbaPracownikowGet(); i++)
@@ -224,7 +224,7 @@ int BazaPracownikow::sumaZarobkowPracownikow() const
 	return sumaZarobkow;
 }
 //moze przeciazyc dla samego nazwiska?
-std::string BazaPracownikow::operator[](int id)
+std::string BazaPracownikow::operator[](int id) const
 {
 
 	if (liczbaPracownikowGet() == 0)
@@ -242,7 +242,7 @@ std::string BazaPracownikow::operator[](int id)
 }
 
 
-std::string BazaPracownikow::operator[](std::string nazwisko)
+std::string BazaPracownikow::operator[](std::string nazwisko) const
 {
 	if (liczbaPracownikowGet() == 0)
 		return PUSTYSTRING;

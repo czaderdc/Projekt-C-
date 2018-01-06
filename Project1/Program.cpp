@@ -116,9 +116,10 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 						}
 						else
 						{
-							cout << endl << "Mamy juz dyrektora!";
+							cout << endl << "Mamy juz dyrektora!" << endl;
+							czySukces = false;
 						}
-						czyKomunikaty = false;
+						czyKomunikaty = true;
 						break;
 					}
 					case 2:
@@ -126,7 +127,6 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 						wprowadzDane(imie, nazwisko, zarobki);
 						Fizyczny pracownikFizyczny(imie, nazwisko, stoi(zarobki), bazaDanych.nadajID());
 						bazaDanych.dodajPracownikaTablica(pracownikFizyczny, czySukces);
-						czyKomunikaty = true;
 						break;
 					}
 				}
@@ -210,6 +210,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					wynik = bazaDanych[id];
 					if (wynik == "") {
 						cout << "\nNie ma w bazie uzytkownika o takim ID!\n";
+						czySukces = false;
 					}
 					else
 					{
@@ -217,7 +218,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 						cout << endl << wynik;
 					}
 				}
-				else if (dodatkoweOpcje == 2)
+				else if (wybor == 2)
 				{
 					cout << "\nPodaj nazwisko pracownika: ";
 					cin >> nazwisko;
@@ -235,6 +236,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					}
 					else
 					{
+						cout << wynik << endl;
 						czySukces = true;
 						cout << endl << wynik;
 					}

@@ -25,16 +25,16 @@ public:
 	size_t liczbaPracownikowGet() const { return liczbaPracownikow; }
 	Pracownik* Pracownicy = nullptr;
 	const Pracownik* pobierzPracownikow()const { return Pracownicy; }
-	int sumaZarobkowPracownikow();
+	int sumaZarobkowPracownikow()const;
 	//referencje przekazuje aby sledzic ID pracownika, co swiadczy o ilosc pracownikow aby zarezerwowac na biezaco odpowiednia ilosc pamieci
 	void realokujTablice(Pracownik&p, bool& failed);
 	void dodajPracownikaTablica(Pracownik &p, bool& failed);
 	std::string przytnijOpis(std::string opis, std::string liniaTekstu, size_t& pozycja);
 	void usunPracownika(int IDpracownika);
-	int sumaZarobkowPracownikow() const;
+	int sumaZarobkowPracownikow();
 	void realokujTabliceUsuwam(Pracownik& p);
-	std::string operator[](int id);
-	std::string operator[](std::string nazwisko);
+	std::string operator[](int id)const;
+	std::string operator[](std::string nazwisko)const;
 	void wyswietlPracownikowTablica();
 	~BazaPracownikow();
 };
