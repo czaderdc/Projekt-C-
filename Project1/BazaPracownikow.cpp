@@ -133,13 +133,14 @@ void BazaPracownikow::realokujTablice(Pracownik& p, bool& failed)
 			pracownicy[0] = p;
 		}
 	}
-	catch (std::bad_alloc&e)
+	catch (const std::bad_alloc&)
 	{
 		std::cerr << std::endl << "Blad z alokacja pamieci!";
 		failed = true;
 	}
-	catch (std::exception& e)
+	catch (const std::exception& exWiadomosc)
 	{
+		std::cerr << std::endl << "Wystapil inny blad\n" << exWiadomosc.what();
 		failed = true;
 	}
 

@@ -70,13 +70,13 @@ void MenedzerPlikow::zapiszNazwePlikuDoTablicy(std::string & nazwaPliku2)
 			tablicaPlikow[0] = nazwaPliku2;
 		}
 	}
-	catch (std::bad_alloc& ex)
+	catch (std::bad_alloc&)
 	{
-
+		std::cerr << std::endl << "Blad przy alokacji pamieci dla tablicy plikow!\n";
 	}
 	catch (std::exception& ex)
 	{
-
+		std::cerr << std::endl << "Wystapil inny blad: \n" << ex.what() << std::endl;
 	}
 }
 //przycina sciezke do pliku do nazwy samego pliku
@@ -85,6 +85,7 @@ void MenedzerPlikow::przytnijSciezke(std::string& sciezka, size_t dlugoscSciezki
 {
 	std::string nazwaPliku = sciezka.substr(dlugoscSciezki + 1);
 	size_t dlugoscNazwyPliku = nazwaPliku.length();
+	//szukam tylko plikow txt
 	if (nazwaPliku[dlugoscNazwyPliku - 1] == 't' && nazwaPliku[dlugoscNazwyPliku - 2] == 'x' &&  nazwaPliku[dlugoscNazwyPliku - 3] == 't')
 	{
 		++liczbaPlikow;

@@ -300,7 +300,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					cout << "\nNie ma zadnych pracownikow w bazie!" << endl;
 				}
 				int laczneZarobki = bazaDanych.sumaZarobkowPracownikow();
-				cout << "\nLaczne zarobki pracownikow :" << laczneZarobki << endl;
+				cout << "\nLaczne zarobki pracownikow:" << laczneZarobki << "PLN" <<endl;
 				czyKomunikaty = false;
 
 				break;
@@ -497,17 +497,17 @@ void sprawdzanieWyboruUzytkownika(int& integer, bool& czySukces, int zakres)
 			czySukces = true;
 		}
 		else
-		{			throw out_of_range("");
-
+		{			
+			throw out_of_range("");
 		}
 	}
-	catch (out_of_range& ex)
+	catch (const out_of_range&)
 	{
 		czySukces = false;
 		std::cout << endl << "Nie ma takiej opcji menu!" << endl << "Dostepne sa: 1-" << to_string(zakres) << endl;
 		sprawdzanieWyboruUzytkownika(integer, czySukces, zakres);
 	}
-	catch (exception const &e)//zla praktyka przechwytywania klasy bazowe, trace dokladniejsze dane o bledzie przez to
+	catch (const exception&)
 	{
 		czySukces = false;
 		std::cout << endl << "Wprowadzono niepoprawny znak!" << endl;
@@ -529,12 +529,12 @@ bool walidatorStringNaInt(string& zarobki)
 	{
 		int wynik = stoi(zarobki);
 	}
-	catch (out_of_range& exception)
+	catch (const out_of_range&)
 	{
 		cout << endl << "Wprowadzona liczba jest za duza na ten program!";
 		return false;
 	}
-	catch (invalid_argument& arg)
+	catch (const invalid_argument&)
 	{
 		cout << endl << "Wprowadzono niepoprawny znak!";
 		return false;
