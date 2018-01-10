@@ -33,6 +33,7 @@ public:
 	std::string operator[](int id)const;
 	std::string operator[](std::string nazwisko)const;
 	void wyswietlPracownikowTablica();
+	void wyswietlDanePracownika(Pracownik&p)const;
 	~BazaPracownikow();
 };
 

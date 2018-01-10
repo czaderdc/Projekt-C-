@@ -30,6 +30,9 @@
     <ClInclude Include="MenedzerPlikow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Komunikat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Pracownik.cpp">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MenedzerPlikow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Komunikat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

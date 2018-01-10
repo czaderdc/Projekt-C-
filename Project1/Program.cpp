@@ -248,6 +248,8 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 				{
 					cout << "\nPodaj nazwisko pracownika: ";
 					cin >> nazwisko;
+					
+
 					while (!walidatorStringow(nazwisko))
 					{
 						powiadomienie("Wprowadzono niepoprawne znaki!\n");

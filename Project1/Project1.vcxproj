@@ -22,6 +22,7 @@
     <ClInclude Include="BazaPracownikow.h" />
     <ClInclude Include="Dyrektor.h" />
     <ClInclude Include="Fizyczny.h" />
+    <ClInclude Include="Komunikat.h" />
     <ClInclude Include="MenedzerPlikow.h" />
     <ClInclude Include="Pracownik.h" />
   </ItemGroup>
@@ -29,6 +30,7 @@
     <ClCompile Include="BazaPracownikow.cpp" />
     <ClCompile Include="Dyrektor.cpp" />
     <ClCompile Include="Fizyczny.cpp" />
+    <ClCompile Include="Komunikat.cpp" />
     <ClCompile Include="MenedzerPlikow.cpp" />
     <ClCompile Include="Pracownik.cpp" />
     <ClCompile Include="Program.cpp" />

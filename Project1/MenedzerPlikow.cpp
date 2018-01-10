@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include "MenedzerPlikow.h"
+#include "Komunikat.h"
 
 MenedzerPlikow::MenedzerPlikow(std::string nazwaPliku, bool czyDodano, bool czyUsunieto) : dodanoPracownika(czyDodano), usunietoPracownika(czyUsunieto), nazwaPliku(nazwaPliku + ".txt")
 {
@@ -14,19 +15,20 @@ MenedzerPlikow::MenedzerPlikow(std::string nazwaPliku, bool czyDodano, bool czyU
 	//std::wstring pelnaSciezkawString(sciezka.begin(), sciezka.end());
 	if (czySciezkaIstnieje(sciezka, nazwaPliku + ".txt"))
 	{
-		std::cout << "Plik o podanej nazwie juz istnieje! Wczytuje zatem ten plik" << std::endl << std::endl;
+		Komunikat::powiadomUzytkownika("Plik o podanej nazwie juz istnieje! Wczytuje zatem ten plik");
 	}
 	else
 	{
 		std::ofstream plik(nazwaPliku + ".txt");
 		if (!plik)
 		{
-			std::cout << "Problem przy tworzeniu pliku!";
+			Komunikat::powiadomUzytkownika("Problem przy tworzeniu pliku!");
 		}
 		else
 		{
-			std::cout << std::endl << "Plik utworzono poprawnie!" << std::endl;
-			std::cout << std::endl << "Twoj plik z baza pracownikow znajdziesz pod sciezka: " << std::endl << sciezka + "\\" + nazwaPliku + ".txt" << std::endl << std::endl << std::endl;
+			Komunikat::powiadomUzytkownika("Plik utworzono poprawnie!");
+			Komunikat::powiadomUzytkownika("Twoj plik z baza pracownikow znajdziesz pod sciezka: ");
+		    Komunikat::powiadomUzytkownika(std::string(sciezka + "\\" + nazwaPliku + ".txt").c_str());
 			plik.close();
 		}
 	}
@@ -72,11 +74,12 @@ void MenedzerPlikow::zapiszNazwePlikuDoTablicy(std::string & nazwaPliku2)
 	}
 	catch (std::bad_alloc&)
 	{
-		std::cerr << std::endl << "Blad przy alokacji pamieci dla tablicy plikow!\n";
+		Komunikat::powiadomUzytkownika("Blad przy alokacji pamieci dla tablicy plikow!\n");
 	}
 	catch (std::exception& ex)
 	{
-		std::cerr << std::endl << "Wystapil inny blad: \n" << ex.what() << std::endl;
+		Komunikat::powiadomUzytkownika("Wystapil inny blad: \n");
+		Komunikat::powiadomUzytkownika(ex.what());
 	}
 }
 //przycina sciezke do pliku do nazwy samego pliku
@@ -105,17 +108,17 @@ void MenedzerPlikow::wyswietlPlikiBazDanych()
 
 void MenedzerPlikow::wczytajWybranyPlikBazdyDanych(std::string& nazwaPliku, BazaPracownikow& baza, bool& failed)
 {
-	std::cout << std::endl << "Oto lista dostepnych plikow z baza danych: ";
+	Komunikat::powiadomUzytkownika("Oto lista dostepnych plikow z baza danych: ");
 	wyswietlPlikiBazDanych();
 	std::cout << std::endl << std::endl;
-	std::cout << "Ktory plik chcesz wczytac? Podaj nazwe bez \".txt: ";
+	Komunikat::powiadomUzytkownika("Ktory plik chcesz wczytac? Podaj nazwe bez \".txt: ");
 	std::cin >> nazwaPliku;
 	for (size_t i = 0; i < liczbaPlikow; i++)
 	{
 		if (tablicaPlikow[i] == nazwaPliku + ".txt")
 		{
-			std::cout << std::endl << "Znalazlem ten plik: " << std::endl;
-			std::cout << std::endl << "Wczytuje...." << std::endl;
+			Komunikat::powiadomUzytkownika("Znalazlem ten plik: ");
+			Komunikat::powiadomUzytkownika("Wczytuje....");
 			nazwaPliku = tablicaPlikow[i];
 			wczytajDanezPliku(baza, failed);
 			return;
@@ -124,7 +127,7 @@ void MenedzerPlikow::wczytajWybranyPlikBazdyDanych(std::string& nazwaPliku, Baza
 		failed = true;
 	}
 	//resetujTablicePlikow();
-	std::cout << std::endl << "Plik o podanej nazwie nie istnieje! ";
+	Komunikat::powiadomUzytkownika("Plik o podanej nazwie nie istnieje! ");
 	wczytajWybranyPlikBazdyDanych(nazwaPliku, baza, failed);
 }
 
@@ -160,14 +163,14 @@ void MenedzerPlikow::zapiszDoPliku(bool & czySukces, BazaPracownikow& baza)
 
 	if (!plikZapis)
 	{
-		std::cerr << "Nie odnaleziono pliku!" << std::endl;
+		Komunikat::powiadomUzytkownika("Nie odnaleziono pliku!");
 		czySukces = false;
 		return;
 
 	}
 	if (baza.liczbaPracownikowGet() == 0 || baza.pobierzPracownikow() == nullptr)
 	{
-		std::cerr << "\nNie ma czego zapisac do pliku!\n";
+		Komunikat::powiadomUzytkownika("\nNie ma czego zapisac do pliku!\n");
 		czySukces = false;
 		//usun ostatnia zawartosc pliku jesli z pamieci usunalem wszystkich pracownikow, bo inaczej ciagle bedzie jeden rekord w pliku
 		//mimo usuniecia wsyztskich z pamieci bo pomijam zapisywanie pliku w przypadku gdy tablica pracownicy == nullptr
@@ -213,11 +216,11 @@ void MenedzerPlikow::wczytajDanezPliku(BazaPracownikow& baza, bool& failed)
 	std::ifstream plikOdczyt(nazwaPliku, std::ios::out);
 	if (!plikOdczyt)
 	{
-		std::cout << std::endl << "Problem z odczytem pliku!";
+		Komunikat::powiadomUzytkownika("Problem z odczytem pliku!");
 	}
 	if (plikOdczyt.peek() == std::ifstream::traits_type::eof())
 	{
-		std::cout << std::endl << "Plik z baza danych jest pusty!";
+		Komunikat::powiadomUzytkownika("Plik z baza danych jest pusty!");
 	}
 	//czytanie jesli plik wczesniej zawieral Pracownikow
 	std::string liniaTekstu = "";

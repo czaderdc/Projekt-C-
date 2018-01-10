@@ -34,7 +34,7 @@ Pracownik & Pracownik::operator=(const Pracownik & p)
 
 bool Pracownik::operator==(const Pracownik & p) const
 {
-	if (imie_ == p.imie_ && nazwisko_ == p.nazwisko_ && zarobki_ == p.zarobki_)
+	if (imie_ == p.imie_ && nazwisko_ == p.nazwisko_ )
 		return true;
 	return false;
 }

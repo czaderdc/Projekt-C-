@@ -2,9 +2,8 @@
 #include "BazaPracownikow.h"
 #include <iomanip>
 #include <exception>
+#include "Komunikat.h"
 #define PUSTYSTRING ""
-bool wczytane = false;
-bool dodano = false;
 void BazaPracownikow::resetujTablicePracownikow()
 {
 	liczbaPracownikow = 0;
@@ -136,12 +135,13 @@ void BazaPracownikow::realokujTablice(Pracownik& p, bool& failed)
 	}
 	catch (const std::bad_alloc&)
 	{
-		std::cerr << std::endl << "Blad z alokacja pamieci!";
+		Komunikat::powiadomUzytkownika("Blad z alokacja pamieci!");
 		failed = true;
 	}
 	catch (const std::exception& exWiadomosc)
 	{
-		std::cerr << std::endl << "Wystapil inny blad\n" << exWiadomosc.what();
+		Komunikat::powiadomUzytkownika("Wystapil inny blad\n"); 
+		Komunikat::powiadomUzytkownika(exWiadomosc.what());
 		failed = true;
 	}
 
@@ -149,26 +149,22 @@ void BazaPracownikow::realokujTablice(Pracownik& p, bool& failed)
 }
 #pragma endregion Realokacja 
 
-void BazaPracownikow::dodajPracownikaTablica(Pracownik & p, bool& failed)
+void BazaPracownikow::dodajPracownikaTablica(Pracownik & p, bool& czySukces)
 {
 
 	//jesli wczytujemy z pliku przy uruchamianiu programu to pomin sprawdzanie, bo wywali blad ze po prawej stronie stoi nullptr
-	if (wczytane)
-	{
-		for (size_t i = 0; i < liczbaPracownikowGet(); i++)
+	for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 		{
 			if (p == pracownicy[i])
 			{
-				std::cout << "\nPracownik o podanych danych juz istnieje. Moze chcesz uaktualnic jego dane?\n";
-				std::string wybor = "";
-				std::cin >> wybor;
+				Komunikat::powiadomUzytkownika("Pracownik o podanych danych juz istnieje");
+				czySukces = false;
 				return;
 			}
 		}
-	}
+	
 	++liczbaPracownikow;
-	dodano = true;
-	realokujTablice(p, failed);
+	realokujTablice(p, czySukces);
 }
 
 
@@ -351,6 +347,8 @@ void BazaPracownikow::wyswietlPracownikowTablica()
 		}
 	}
 }
+
+
 
 
 BazaPracownikow::~BazaPracownikow()
