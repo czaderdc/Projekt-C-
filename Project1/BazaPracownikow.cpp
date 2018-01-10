@@ -45,7 +45,7 @@ BazaPracownikow::BazaPracownikow()
 # pragma region Realokacja
 void BazaPracownikow::realokujTabliceUsuwam(Pracownik& p)
 {
-	--idPracownika;
+	
 	//bo jednego "usuwam" z tablicy dlatego n-1 ze stanem wejsciowym
 	size_t iluSkopiowac = liczbaPracownikowGet() - 1;
 	if (iluSkopiowac == 0)
@@ -265,7 +265,7 @@ void BazaPracownikow::wyswietlPracownikowTablica()
 {
 	if (liczbaPracownikowGet() == 0 || pracownicy == nullptr)
 	{
-		std::cout << "\nW tablicy nie ma zapisanych zadnych pracownikow!\n";
+		Komunikat::powiadomUzytkownika("W bazie nie ma zapisanych zadnych pracownikow!");
 	}
 	else
 	{
@@ -347,7 +347,6 @@ void BazaPracownikow::wyswietlPracownikowTablica()
 		}
 	}
 }
-
 
 
 

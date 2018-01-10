@@ -39,48 +39,51 @@ MenedzerPlikow::MenedzerPlikow(std::string nazwaPliku, bool czyDodano, bool czyU
 
 void MenedzerPlikow::zapiszNazwePlikuDoTablicy(std::string & nazwaPliku2)
 {
+	//wlasne alokatory
+	//try
+	//{
+	//	//jesli w tablicy juz cos bylo
+	//	if (liczbaPlikow > 1)
+	//	{
+	//		std::string* tablicaTemp = new std::string[liczbaPlikow - 1];
+	//		for (size_t i = 0; i < liczbaPlikow - 1; i++)
+	//		{
+	//			tablicaTemp[i] = tablicaPlikow[i];
+	//		}
+	//		if (tablicaPlikow != nullptr)
+	//		{
+	//			delete[] tablicaPlikow;
+	//			tablicaPlikow = nullptr;
+	//		}
+	//		tablicaPlikow = new std::string[liczbaPlikow];
+	//		for (size_t i = 0; i < liczbaPlikow - 1; i++)
+	//		{
+	//			tablicaPlikow[i] = tablicaTemp[i];
+	//		}
+	//		tablicaPlikow[liczbaPlikow - 1] = nazwaPliku2;
+	//		delete[] tablicaTemp;
+	//		tablicaTemp = nullptr;
 
-	try
-	{
-		//jesli w tablicy juz cos bylo
-		if (liczbaPlikow > 1)
-		{
-			std::string* tablicaTemp = new std::string[liczbaPlikow - 1];
-			for (size_t i = 0; i < liczbaPlikow - 1; i++)
-			{
-				tablicaTemp[i] = tablicaPlikow[i];
-			}
-			if (tablicaPlikow != nullptr)
-			{
-				delete[] tablicaPlikow;
-				tablicaPlikow = nullptr;
-			}
-			tablicaPlikow = new std::string[liczbaPlikow];
-			for (size_t i = 0; i < liczbaPlikow - 1; i++)
-			{
-				tablicaPlikow[i] = tablicaTemp[i];
-			}
-			tablicaPlikow[liczbaPlikow - 1] = nazwaPliku2;
-			delete[] tablicaTemp;
-			tablicaTemp = nullptr;
+	//	}
+	//	//jesli nic w niej nie bylo
+	//	else
+	//	{
+	//		tablicaPlikow = new std::string[1];
+	//		tablicaPlikow[0] = nazwaPliku2;
+	//	}
+	//}
+	//catch (std::bad_alloc&)
+	//{
+	//	Komunikat::powiadomUzytkownika("Blad przy alokacji pamieci dla tablicy plikow!\n");
+	//}
+	//catch (std::exception& ex)
+	//{
+	//	Komunikat::powiadomUzytkownika("Wystapil inny blad: \n");
+	//	Komunikat::powiadomUzytkownika(ex.what());
+	//}
 
-		}
-		//jesli nic w niej nie bylo
-		else
-		{
-			tablicaPlikow = new std::string[1];
-			tablicaPlikow[0] = nazwaPliku2;
-		}
-	}
-	catch (std::bad_alloc&)
-	{
-		Komunikat::powiadomUzytkownika("Blad przy alokacji pamieci dla tablicy plikow!\n");
-	}
-	catch (std::exception& ex)
-	{
-		Komunikat::powiadomUzytkownika("Wystapil inny blad: \n");
-		Komunikat::powiadomUzytkownika(ex.what());
-	}
+	pliki.push_back(nazwaPliku2);
+
 }
 //przycina sciezke do pliku do nazwy samego pliku
 
@@ -106,29 +109,30 @@ void MenedzerPlikow::wyswietlPlikiBazDanych()
 	}
 }
 
-void MenedzerPlikow::wczytajWybranyPlikBazdyDanych(std::string& nazwaPliku, BazaPracownikow& baza, bool& failed)
+void MenedzerPlikow::wczytajWybranyPlikBazdyDanych(std::string& plik, BazaPracownikow& baza, bool& czySukces)
 {
 	Komunikat::powiadomUzytkownika("Oto lista dostepnych plikow z baza danych: ");
 	wyswietlPlikiBazDanych();
 	std::cout << std::endl << std::endl;
 	Komunikat::powiadomUzytkownika("Ktory plik chcesz wczytac? Podaj nazwe bez \".txt: ");
-	std::cin >> nazwaPliku;
-	for (size_t i = 0; i < liczbaPlikow; i++)
+	std::cin >> plik;
+
+	for (auto i = pliki.begin(); i != pliki.end(); i++)
 	{
-		if (tablicaPlikow[i] == nazwaPliku + ".txt")
+		if (*i == plik + ".txt")
 		{
 			Komunikat::powiadomUzytkownika("Znalazlem ten plik: ");
 			Komunikat::powiadomUzytkownika("Wczytuje....");
-			nazwaPliku = tablicaPlikow[i];
-			wczytajDanezPliku(baza, failed);
+			zmienPlik(*i);
+			wczytajDanezPliku(baza, czySukces);
 			return;
-			//zaladowac ten plik
+			
 		}
-		failed = true;
+		czySukces = false;
 	}
 	//resetujTablicePlikow();
 	Komunikat::powiadomUzytkownika("Plik o podanej nazwie nie istnieje! ");
-	wczytajWybranyPlikBazdyDanych(nazwaPliku, baza, failed);
+	wczytajWybranyPlikBazdyDanych(nazwaPliku, baza, czySukces);
 }
 
 bool MenedzerPlikow::czyPlikIstnieje(const std::string& file) {
@@ -140,6 +144,10 @@ void MenedzerPlikow::resetujTablicePlikow()
 	liczbaPlikow = 0;
 	delete[] tablicaPlikow;
 	tablicaPlikow = nullptr;
+}
+void MenedzerPlikow::zmienPlik(std::string nowy)
+{
+	nazwaPliku = nowy;
 }
 //winapi C sprawdza czy pod obecna sciezka istnieje plik o podanej nazwie w celu zapobiegania nadawania takiej samej nazwy
 //kolejnemu plikowi bazy danych po ponownym uruchomieniu programu

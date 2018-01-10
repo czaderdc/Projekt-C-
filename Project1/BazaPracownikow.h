@@ -14,6 +14,7 @@ private:
 	Dyrektor dyrektor_;
 public:
 	BazaPracownikow();
+	int aktualneID()const { return idPracownika; }
 	void aktualizujId(int id) { idPracownika = id; }
 	Dyrektor& pobierzDyrektora(){ return dyrektor_; }
 	void resetujTablicePracownikow();

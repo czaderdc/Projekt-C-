@@ -94,6 +94,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 
 			case 1:
 			{
+				czyKomunikaty = true;
 				std::string imie, nazwisko, zarobki;
 				cout << "[1]Dodaj Dyrektora\n[2]Dodaj Pracownika Fizycznego" << endl;
 				sprawdzanieWyboruUzytkownika(dodatkoweOpcje, czySukces, 3);
@@ -116,7 +117,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 							powiadomienie("Mamy juz dyrektora!");
 							czySukces = false;
 						}
-						czyKomunikaty = true;
+						
 						break;
 					}
 					case 2:
@@ -232,7 +233,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 				if (wybor == 1)
 				{
 					cout << "\nPodaj ID Pracownika: ";
-					sprawdzanieWyboruUzytkownika(id, czySukces, INT_MAX);
+					sprawdzanieWyboruUzytkownika(id, czySukces, bazaDanych.aktualneID());
 					wynik = bazaDanych[id];
 					if (wynik == "") {
 						powiadomienie("\nNie ma w bazie uzytkownika o takim ID!\n");
@@ -241,7 +242,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					else
 					{
 						czySukces = true;
-						cout << endl << wynik;
+						powiadomienie((bazaDanych.szukajPoId(id)->pobierzImie() + " " + bazaDanych.szukajPoId(id)->pobierzNazwisko() + " zarabia: " + to_string(bazaDanych.szukajPoId(id)->pobierzZarobki())).c_str());
 					}
 				}
 				else if (wybor == 2)
@@ -266,7 +267,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					{
 						cout << wynik << endl;
 						czySukces = true;
-						cout << endl << wynik;
+						cout << endl << wynik << endl;
 					}
 
 				}
@@ -323,6 +324,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 				if (!bazaDanych.czyJestDyrektor())
 				{
 					powiadomienie("W bazie nie ma zadnego dyrektora! Aby dostac sie do panelu dyrektora musisz najpierw dodac dyrektora do bazy!");
+					czySukces = false;
 					break;
 				}
 			
