@@ -10,6 +10,7 @@ public:
 	Dyrektor();
 	void wyswietlPodleglychPracownikow()const;
 	void dodajPodleglegoPracownika(const Pracownik& pracownik);
+	void usunPodleglegoPracownika(int idPracownika);
 	virtual ~Dyrektor();
 private:
 	std::vector<Pracownik> podleglipracownicy;

@@ -11,13 +11,13 @@ private:
 	int idPracownika;
 	size_t liczbaPracownikow;
 	Pracownik* pracownicy = nullptr;
+	Dyrektor dyrektor_;
 public:
 	BazaPracownikow();
-	Dyrektor dyrektor_;
 	void aktualizujId(int id) { idPracownika = id; }
-	Dyrektor& pobierzDyrektora() { return dyrektor_; }
+	Dyrektor& pobierzDyrektora(){ return dyrektor_; }
 	void resetujTablicePracownikow();
-	const Pracownik& szukajPoId (int Id)const;
+	const Pracownik* szukajPoId (int Id)const;
 	bool czyJestDyrektor();
 	void dodajDyrektora(const Dyrektor& dyrektor);
 	int nadajID() { return ++idPracownika; }	

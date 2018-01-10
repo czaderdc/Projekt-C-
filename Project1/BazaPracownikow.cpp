@@ -2,7 +2,6 @@
 #include "BazaPracownikow.h"
 #include <iomanip>
 #include <exception>
-#include <sstream>
 #define PUSTYSTRING ""
 bool wczytane = false;
 bool dodano = false;
@@ -13,14 +12,16 @@ void BazaPracownikow::resetujTablicePracownikow()
 	delete[] pracownicy;
 	pracownicy = nullptr;
 }
-const Pracownik& BazaPracownikow::szukajPoId(int Id) const
-{
+const Pracownik* BazaPracownikow::szukajPoId(int Id) const
+{ 
 
 	for (size_t i = 0; i < liczbaPracownikowGet(); i++)
 	{
 		if (pracownicy[i].pobierzID() == Id)
-			return pracownicy[i];
+			return &pracownicy[i];
 	}
+
+	return nullptr;
 }
 bool BazaPracownikow::czyJestDyrektor()
 {
@@ -32,7 +33,7 @@ bool BazaPracownikow::czyJestDyrektor()
 
 	return false;
 }
-void BazaPracownikow::dodajDyrektora(const Dyrektor & dyrektor)
+void BazaPracownikow::dodajDyrektora(const Dyrektor& dyrektor)
 {
 	dyrektor_ = dyrektor;
 

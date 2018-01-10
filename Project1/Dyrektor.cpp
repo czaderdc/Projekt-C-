@@ -37,6 +37,17 @@ void Dyrektor::dodajPodleglegoPracownika(const Pracownik& pracownik)
 	podleglipracownicy.push_back(pracownik);
 }
 
+void Dyrektor::usunPodleglegoPracownika(int idPracownika)
+{
+	for (auto i = podleglipracownicy.begin(); i!= podleglipracownicy.end(); i++)
+	{
+		if (i->pobierzID() == idPracownika)
+		{
+			podleglipracownicy.erase(i);
+		}
+	}
+}
+
 
 Dyrektor::~Dyrektor()
 {

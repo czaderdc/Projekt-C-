@@ -279,7 +279,7 @@ void MenedzerPlikow::wczytajDanezPliku(BazaPracownikow& baza, bool& failed)
 			{
 				Dyrektor odczyt(imie, nazwisko, zarobki, id, pozycjaPracownika);
 				baza.dodajPracownikaTablica(odczyt, failed);
-				baza.dyrektor_ = odczyt;
+				baza.dodajDyrektora(odczyt);
 				baza.aktualizujId(id);
 			}
 			else

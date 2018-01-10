@@ -8,12 +8,10 @@
 #include "BazaPracownikow.h"
 #include <string>
 #include <conio.h>
-#include <sstream>
 #include <stdlib.h>
 #include <exception>
 #include <Windows.h>
 #include "MenedzerPlikow.h"
-#include <string.h>
 #include "Dyrektor.h"
 #include "Fizyczny.h"
 #include "Pracownik.h"
@@ -36,7 +34,7 @@ bool hasloPanelDyrektora(string& haslo, char tryb);
 //jesli operacja sie powiodla to wyswietl powiadomienie uzytkownikowi
 void sukces();
 void porazka();
-
+void powiadomienie(const char*);
 bool pierwszeUruchomienie = true;
 bool czySukces = false;
 bool czyKomunikaty = false;
@@ -82,7 +80,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 		{
 			menedzer.wczytajDanezPliku(bazaDanych, czySukces);
 			if (bazaDanych.liczbaPracownikowGet() == 0)
-				cout << endl << "Wczytany plik jest pusty, nie zawiera rekordow z pracownikami!" << endl;
+				powiadomienie("Wczytany plik jest pusty, nie zawiera rekordow z pracownikami!");
 		}
 
 
@@ -115,7 +113,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 						}
 						else
 						{
-							cout << endl << "Mamy juz dyrektora!" << endl;
+							powiadomienie("Mamy juz dyrektora!");
 							czySukces = false;
 						}
 						czyKomunikaty = true;
@@ -134,35 +132,30 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 			case 2:
 			{
 					czyKomunikaty = true;
+					cout << endl << "Oto lista pracownikow: " << endl;
+					bazaDanych.wyswietlPracownikowTablica();
 				    cout << "\nPodaj ID pracownika: ";
 					
 					string id;
 					cin >> id;
-					bool r = true;
-					while (r = !walidatorStringNaInt(id))
+					while (!walidatorStringNaInt(id))
 					{
-						cout << endl << "Jesli nie wiesz jakie jest jego ID, wyswietl liste pracownikow w glownym menu [6]!" << endl;
-						czySukces = false;
-						break;
+						powiadomienie("Widocznie wprowadziles niepoprawny znak / zle ID\nPodaj ID pracownika : ");
+						cin >> id;
 						
 					}
-
-					if (r == true)
-					{
-						break;
-					}
-
+					
 					if (bazaDanych[stoi(id)] == PUSTYSTRING)
 					{
 						czySukces = false;
-						cout << endl << "Nie ma pracownika o takim id!!" << endl;
+						powiadomienie("Nie ma pracownika o takim id!!");
 						break;
 					}
 					else
 					{
 
 						cout << "\nCzy na pewno chcesz nadpisac dane: ";
-						cout << bazaDanych.szukajPoId(wybor).pobierzImie() + " " + bazaDanych.szukajPoId(wybor).pobierzNazwisko() << endl << "[1]TAK\n[2]NIE" << endl;
+						cout << bazaDanych.szukajPoId(wybor)->pobierzImie() + " " + bazaDanych.szukajPoId(wybor)->pobierzNazwisko() << endl << "[1]TAK\n[2]NIE" << endl;
 						int idPracownikaEdytowanego = wybor;
 						sprawdzanieWyboruUzytkownika(wybor, czySukces, 2);
 
@@ -202,26 +195,24 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 				cin >> id;
 				while (!walidatorStringNaInt(id))
 				{
-					cout << endl << "Jesli nie wiesz jakie jest jego ID, wyswietl liste pracownikow w glownym menu [6]!";
-					czySukces = false;
-					break;
+					powiadomienie("Widocznie wprowadziles niepoprawny znak/zle ID\nPodaj ID pracownika ktorego chcesz usunac: ");
+					cin >> id;
 				}
 
 				if (bazaDanych[stoi(id)] == PUSTYSTRING)
 				{
 					czySukces = false;
-					cout << endl << "Nie ma pracownika o takim id!!" << endl;
+					powiadomienie("Nie ma pracownika o takim id!!");
 					break;
 				}
 				else
 				{
-					cout << endl << "Czy na pewno chcesz usunac: " + bazaDanych.szukajPoId(stoi(id)).pobierzImie() + " "+ bazaDanych.szukajPoId(stoi(id)).pobierzNazwisko() + " ?" << std::endl;
+					cout << endl << "Czy na pewno chcesz usunac: " + bazaDanych.szukajPoId(stoi(id))->pobierzImie() + " "+ bazaDanych.szukajPoId(stoi(id))->pobierzNazwisko() + " ?" << std::endl;
 					cout << "\n[1]TAK\n[2]NIE\n";
 					sprawdzanieWyboruUzytkownika(wybor, czySukces, 2);
 					if (wybor == 1)
 					{
 						bazaDanych.usunPracownika(stoi(id));
-						//lPracownikowNaPoczatku--;
 					}
 					else
 					{
@@ -244,7 +235,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					sprawdzanieWyboruUzytkownika(id, czySukces, INT_MAX);
 					wynik = bazaDanych[id];
 					if (wynik == "") {
-						cout << "\nNie ma w bazie uzytkownika o takim ID!\n";
+						powiadomienie("\nNie ma w bazie uzytkownika o takim ID!\n");
 						czySukces = false;
 					}
 					else
@@ -259,14 +250,14 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					cin >> nazwisko;
 					while (!walidatorStringow(nazwisko))
 					{
-						cout << "Wprowadzono niepoprawne znaki!\n";
+						powiadomienie("Wprowadzono niepoprawne znaki!\n");
 						cout << "\nPodaj nazwisko pracownika: ";
 						cin >> nazwisko;
 					}
 
 					wynik = bazaDanych[nazwisko];
 					if (wynik == "") {
-						cout << "\nNie ma w bazie uzytkownika o takim nazwisku!\n";
+						powiadomienie("\nNie ma w bazie uzytkownika o takim nazwisku!\n");
 						czySukces = false;
 					}
 					else
@@ -297,7 +288,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 			{
 				if (bazaDanych.liczbaPracownikowGet() == 0)
 				{
-					cout << "\nNie ma zadnych pracownikow w bazie!" << endl;
+					powiadomienie("\nNie ma zadnych pracownikow w bazie!");
 				}
 				int laczneZarobki = bazaDanych.sumaZarobkowPracownikow();
 				cout << "\nLaczne zarobki pracownikow:" << laczneZarobki << "PLN" <<endl;
@@ -326,44 +317,88 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 			}
 			case 11:
 			{
+				czyKomunikaty = true;
 				if (!bazaDanych.czyJestDyrektor())
 				{
-					cout << endl << "W bazie nie ma zadnego dyrektora! Aby dostac sie do panelu dyrektora musisz najpierw dodac dyrektora do bazy!" << endl;
+					powiadomienie("W bazie nie ma zadnego dyrektora! Aby dostac sie do panelu dyrektora musisz najpierw dodac dyrektora do bazy!");
 					break;
 				}
+			
+				
 				string haslo;
-				cout << endl << "Aby dostac sie do panelu dyrektora musisz podac haslo." << endl;
+				powiadomienie("Aby dostac sie do panelu dyrektora musisz podac haslo.");
 				cout <<endl<< "Wpisz haslo: ";
 				cin >> haslo;
 				bool wynik = hasloPanelDyrektora(haslo, 'o');
 				if (wynik)
 				{
+					
 					cout << endl << "[1]Wyswietl liste podleglych pracownikow\n[2]Zwolnij pracownika\n[3]Dodaj podleglego pracownika"<<endl;
 					int wybor;
 					cin >> wybor;
 					if (wybor == 1)
 					{
-						bazaDanych.dyrektor_.wyswietlPodleglychPracownikow();
+						bazaDanych.pobierzDyrektora().wyswietlPodleglychPracownikow();
 					}
 					else if (wybor == 2)
 					{
+						cout << endl << "Podaj id pracownika ktorego chcesz zwolnic :";
+						string id;
+						cin >> id;
+						while (!walidatorStringNaInt(id))
+						{
+							powiadomienie("Widocznie wprowadziles niepoprawny znak / zle ID\nPodaj id pracownika ktorego chcesz zwolnic :");
+							cin >> id;
+						}
+
+						if (bazaDanych.szukajPoId(stoi(id)) == nullptr)
+						{
+							powiadomienie("Nie ma pracownika o podanym id!");
+							czySukces = false;
+						}
+						else
+						{
+							if (bazaDanych.szukajPoId(stoi(id))->pobierzPozycje() == "Dyrektor")
+							{
+								powiadomienie("Dyrektor nie moze usunac samego siebie :)");
+								czySukces = false;
+								break;
+							}
+							bazaDanych.usunPracownika(stoi(id));
+							bazaDanych.pobierzDyrektora().usunPodleglegoPracownika(stoi(id));
+							czySukces = true;
+						}
 
 					}
 					else if (wybor == 3)
 					{
-						cout << endl << "Podaj ID pracownika ktorego chcesz byc przelozonym";
-						int id;
+						cout << endl << "Podaj ID pracownika ktorego chcesz byc przelozonym: ";
+						string id;
 						cin >> id;
-						Pracownik poddany = bazaDanych.szukajPoId(id);
-						bazaDanych.dyrektor_.dodajPodleglegoPracownika(poddany);
+						while (!walidatorStringNaInt(id))
+						{
+							powiadomienie("Widocznie wprowadziles niepoprawny znak / zle ID\nPodaj ID pracownika ktorego chcesz byc przelozonym: ");
+							cin >> id;
+						}
+						const Pracownik* poddany = bazaDanych.szukajPoId(stoi(id));
+						if (poddany == nullptr)
+						{
+							powiadomienie("Nie ma pracownika o podanym id!");
+							czySukces = false;
+						}
+						else
+						{
+							bazaDanych.pobierzDyrektora().dodajPodleglegoPracownika(*poddany);
+							czySukces = true;
+						}
 
 					}
 				}
 				else
 				{
-					cout << endl << "Wprowadzone haslo jest nieprawidlowe!" << endl;
+					powiadomienie("Wprowadzone haslo jest nieprawidlowe!");
+					czySukces = false;
 				}
-				czyKomunikaty = false;
 				break;
 			}
 			case 12:
@@ -583,7 +618,11 @@ void porazka()
 
 }
 
-
+void powiadomienie(const char* pow)
+{
+	SetConsoleTextAttribute(h, FOREGROUND_RED | FOREGROUND_GREEN);
+	cout << endl << pow << endl;
+}
 
 
 
