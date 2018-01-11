@@ -182,7 +182,6 @@ int BazaPracownikow::sumaZarobkowPracownikow() const
 
 	return wynik;
 }
-//jak dodam nowych pracownikow i zapisze to pasuje skopiowac do nowego pliku i skasowac zeby nie tworzyly sie kopie
 
 
 std::string BazaPracownikow::przytnijOpis(std::string opis, std::string liniaTekstu, size_t& pozycja)

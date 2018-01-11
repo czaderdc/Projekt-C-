@@ -256,7 +256,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					else
 					{
 						czySukces = true;
-						powiadomienie((bazaDanych.szukajPoId(id)->pobierzImie() + " " + bazaDanych.szukajPoId(id)->pobierzNazwisko() + " zarabia: " + to_string(bazaDanych.szukajPoId(id)->pobierzZarobki())).c_str());
+						powiadomienie((bazaDanych.szukajPoId(id)->pobierzImie() + " " + bazaDanych.szukajPoId(id)->pobierzNazwisko() + " zarabia: " + to_string(bazaDanych.szukajPoId(id)->pobierzZarobki()) + " jest podwladnym: "  + ((bazaDanych.pobierzDyrektora().pobierzID() == id) ? "--------(Jest Dyrektorem)" : bazaDanych.pobierzDyrektora().pobierzImie() +" " + bazaDanych.pobierzDyrektora().pobierzNazwisko())).c_str());
 					}
 				}
 				else if (wybor == 2)
@@ -308,7 +308,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					powiadomienie("\nNie ma zadnych pracownikow w bazie!");
 				}
 				int laczneZarobki = bazaDanych.sumaZarobkowPracownikow();
-				cout << "\nLaczne zarobki pracownikow:" << laczneZarobki << "PLN" <<endl;
+				powiadomienie(("Laczne zarobki pracownikow:" + to_string(laczneZarobki) + "PLN").c_str());
 				czyKomunikaty = false;
 
 				break;
