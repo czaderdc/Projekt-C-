@@ -18,7 +18,7 @@ public:
 	void aktualizujId(int id) { idPracownika = id; }
 	Dyrektor& pobierzDyrektora(){ return dyrektor_; }
 	void resetujTablicePracownikow();
-	const Pracownik* szukajPoId (int Id)const;
+	Pracownik* szukajPoId (int Id)const;
 	bool czyJestDyrektor();
 	void dodajDyrektora(const Dyrektor& dyrektor);
 	int nadajID() { return ++idPracownika; }	
@@ -34,7 +34,6 @@ public:
 	std::string operator[](int id)const;
 	std::string operator[](std::string nazwisko)const;
 	void wyswietlPracownikowTablica();
-	void wyswietlDanePracownika(Pracownik&p)const;
 	~BazaPracownikow();
 };
 

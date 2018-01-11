@@ -11,7 +11,7 @@ void BazaPracownikow::resetujTablicePracownikow()
 	delete[] pracownicy;
 	pracownicy = nullptr;
 }
-const Pracownik* BazaPracownikow::szukajPoId(int Id) const
+Pracownik* BazaPracownikow::szukajPoId(int Id) const
 { 
 
 	for (size_t i = 0; i < liczbaPracownikowGet(); i++)

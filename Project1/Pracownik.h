@@ -26,6 +26,7 @@ public:
 	std::string pobierzPozycje() { return pozycja_; }
 	friend std::ostream& operator <<(std::ostream&os, const Pracownik & p);
 	bool operator==(const Pracownik&p)const;
+
 	virtual ~Pracownik();
 
 };

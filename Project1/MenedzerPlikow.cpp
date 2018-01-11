@@ -128,9 +128,9 @@ void MenedzerPlikow::wczytajWybranyPlikBazdyDanych(std::string& plik, BazaPracow
 			return;
 			
 		}
-		czySukces = false;
+		
 	}
-	//resetujTablicePlikow();
+	czySukces = false;
 	Komunikat::powiadomUzytkownika("Plik o podanej nazwie nie istnieje! ");
 	wczytajWybranyPlikBazdyDanych(nazwaPliku, baza, czySukces);
 }
@@ -218,17 +218,19 @@ void MenedzerPlikow::zapiszDoPliku(bool & czySukces, BazaPracownikow& baza)
 
 }
 
-void MenedzerPlikow::wczytajDanezPliku(BazaPracownikow& baza, bool& failed)
+void MenedzerPlikow::wczytajDanezPliku(BazaPracownikow& baza, bool& czySukces)
 {
 	baza.resetujTablicePracownikow();
 	std::ifstream plikOdczyt(nazwaPliku, std::ios::out);
 	if (!plikOdczyt)
 	{
 		Komunikat::powiadomUzytkownika("Problem z odczytem pliku!");
+		czySukces = false;
 	}
 	if (plikOdczyt.peek() == std::ifstream::traits_type::eof())
 	{
 		Komunikat::powiadomUzytkownika("Plik z baza danych jest pusty!");
+		czySukces = false;
 	}
 	//czytanie jesli plik wczesniej zawieral Pracownikow
 	std::string liniaTekstu = "";
@@ -289,20 +291,21 @@ void MenedzerPlikow::wczytajDanezPliku(BazaPracownikow& baza, bool& failed)
 			if (czyDyrektor)
 			{
 				Dyrektor odczyt(imie, nazwisko, zarobki, id, pozycjaPracownika);
-				baza.dodajPracownikaTablica(odczyt, failed);
+				baza.dodajPracownikaTablica(odczyt, czySukces);
 				baza.dodajDyrektora(odczyt);
 				baza.aktualizujId(id);
 			}
 			else
 			{
 				Pracownik odczyt(imie, nazwisko, zarobki, id, pozycjaPracownika);
-				baza.dodajPracownikaTablica(odczyt, failed);
+				baza.dodajPracownikaTablica(odczyt, czySukces);
 				baza.aktualizujId(id);
 			}
 			
 		}
 		++licznik;
 	}
+	czySukces = true;
 	plikOdczyt.close();
 }
 

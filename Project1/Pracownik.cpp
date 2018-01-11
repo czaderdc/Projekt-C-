@@ -39,6 +39,8 @@ bool Pracownik::operator==(const Pracownik & p) const
 	return false;
 }
 
+
+
 Pracownik::~Pracownik()
 {
 

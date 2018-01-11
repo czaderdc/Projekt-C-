@@ -9,6 +9,17 @@ Fizyczny::Fizyczny(std::string imie, std::string nazwisko, int zarobki, int id, 
 {
 }
 
+void Fizyczny::nadajPrzelozonego(Dyrektor& przelozony)
+{
+	przelozony_ = przelozony;
+}
+
+void Fizyczny::zapiszNaDanySystemzmianowy(int ileZmian)
+{
+	ileZmian = ileZmian;
+}
+
+
 Fizyczny::~Fizyczny()
 {
 }

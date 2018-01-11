@@ -122,8 +122,22 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					}
 					case 2:
 					{
+						if (!bazaDanych.czyJestDyrektor())
+						{
+							powiadomienie("Zanim dodasz pracownikow do bazy, najpierw musisz dodac dyrektora, aby Ci mogli miec przelozonego!");
+							czySukces = false;
+							break;
+						}
+
 						wprowadzDane(imie, nazwisko, zarobki);
 						Fizyczny pracownikFizyczny(imie, nazwisko, stoi(zarobki), bazaDanych.nadajID());
+						if (bazaDanych.czyJestDyrektor())
+						{
+							pracownikFizyczny.nadajPrzelozonego(bazaDanych.pobierzDyrektora());
+						}
+						cout << "Na ile zmian bedzie pracowal ten pracownik(1-3): ";
+						sprawdzanieWyboruUzytkownika(wybor, czySukces, 3);
+						pracownikFizyczny.zapiszNaDanySystemzmianowy(wybor);
 						bazaDanych.dodajPracownikaTablica(pracownikFizyczny, czySukces);
 						break;
 					}
@@ -313,9 +327,9 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 			}
 			case 10:
 			{
+				czyKomunikaty = true;
 				string nazwaPliku;
 				menedzer.wczytajWybranyPlikBazdyDanych(nazwaPliku, bazaDanych, czySukces);
-				czyKomunikaty = false;
 				break;
 			}
 			case 11:
@@ -384,7 +398,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 							powiadomienie("Widocznie wprowadziles niepoprawny znak / zle ID\nPodaj ID pracownika ktorego chcesz byc przelozonym: ");
 							cin >> id;
 						}
-						const Pracownik* poddany = bazaDanych.szukajPoId(stoi(id));
+						Pracownik* poddany = bazaDanych.szukajPoId(stoi(id));
 						if (poddany == nullptr)
 						{
 							powiadomienie("Nie ma pracownika o podanym id!");
@@ -550,7 +564,7 @@ void sprawdzanieWyboruUzytkownika(int& integer, bool& czySukces, int zakres)
 	{
 		czySukces = false;
 		std::cout << endl << "Wprowadzono niepoprawny znak!" << endl;
-		std::cout << "Wprowadz 1- " << to_string(zakres) << endl;
+		std::cout << "Wprowadz 1 - " << to_string(zakres) << endl;
 		sprawdzanieWyboruUzytkownika(integer, czySukces, zakres);
 
 	}
