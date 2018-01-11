@@ -38,7 +38,7 @@ void powiadomienie(const char*);
 bool pierwszeUruchomienie = true;
 bool czySukces = false;
 bool czyKomunikaty = false;
-
+bool zalogowany = false;
 int main()
 {
 	//system("color F0");
@@ -342,13 +342,18 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					break;
 				}
 			
+				bool wynik = false;
 				
-				string haslo;
-				powiadomienie("Aby dostac sie do panelu dyrektora musisz podac haslo.");
-				cout <<endl<< "Wpisz haslo: ";
-				cin >> haslo;
-				bool wynik = hasloPanelDyrektora(haslo, 'o');
-				if (wynik)
+				if (!zalogowany)
+				{
+					string haslo;
+					powiadomienie("Aby dostac sie do panelu dyrektora musisz podac haslo.");
+					cout << endl << "Wpisz haslo: ";
+					cin >> haslo;
+					wynik = hasloPanelDyrektora(haslo, 'o');
+				}
+				
+				if (wynik || zalogowany)
 				{
 					
 					cout << endl << "[1]Wyswietl liste podleglych pracownikow\n[2]Zwolnij pracownika\n[3]Dodaj podleglego pracownika"<<endl;
@@ -496,8 +501,14 @@ bool hasloPanelDyrektora(string& haslo, char tryb)
 		ifstream plik("panelDyrektora.txt");
 		string hasloPlik;
 		getline(plik, hasloPlik);
+
+		plik.close();
 		if (haslo == hasloPlik)
+		{
+			
+			zalogowany = true;
 			return true;
+		}
 		else
 			return false;
 	}
