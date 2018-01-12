@@ -44,13 +44,10 @@ int main()
 	//system("color F0");
 
 
+
 	int wybor = 0;
-	std::cout << "Czy wejsc w tryb pelnego ekranu?\n[1]TAK\n[2]NIE\n";
-	sprawdzanieWyboruUzytkownika(wybor, czySukces, 2);
-	if (wybor == 1)
-	{
-		::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
-	}
+	SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+	
 	//Pe³ny ekran::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
 	cout << "Podaj nazwe pliku bazy danych, albo nazwe pliku ktory utworzyles wczesniej: ";
 	string nazwaPliku;
@@ -87,7 +84,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 		menu();
 		pierwszeUruchomienie = false;
 
-		sprawdzanieWyboruUzytkownika(wybor, czySukces, 12);
+		sprawdzanieWyboruUzytkownika(wybor, czySukces, 13);
 		switch (wybor)
 		{
 
@@ -147,6 +144,12 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 			case 2:
 			{
 					czyKomunikaty = true;
+					if (bazaDanych.liczbaPracownikowGet() == 0)
+					{
+						powiadomienie("W bazie nie ma zadnych pracownikow!");
+						czySukces = false;
+						break;
+					}
 					cout << endl << "Oto lista pracownikow: " << endl;
 					bazaDanych.wyswietlPracownikowTablica();
 				    cout << "\nPodaj ID pracownika: ";
@@ -170,14 +173,13 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					{
 
 						cout << "\nCzy na pewno chcesz nadpisac dane: ";
-						cout << bazaDanych.szukajPoId(wybor)->pobierzImie() + " " + bazaDanych.szukajPoId(wybor)->pobierzNazwisko() << endl << "[1]TAK\n[2]NIE" << endl;
-						int idPracownikaEdytowanego = wybor;
+						cout << bazaDanych.szukajPoId(stoi(id))->pobierzImie() + " " + bazaDanych.szukajPoId(stoi(id))->pobierzNazwisko() << endl << "[1]TAK\n[2]NIE" << endl;
 						sprawdzanieWyboruUzytkownika(wybor, czySukces, 2);
 
 
 						if (wybor == 1)
 						{
-							bazaDanych.usunPracownika(idPracownikaEdytowanego);
+							bazaDanych.usunPracownika(stoi(id));
 							string imie, nazwisko, zarobki, pozycja;
 							cout << endl << "Wprowadz nowe dane dla tego pracownika:";
 							wprowadzDane(imie, nazwisko, zarobki);
@@ -186,6 +188,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 						}
 						else if (wybor == 2)
 						{
+							czyKomunikaty = false;
 							break;
 						}
 
@@ -202,8 +205,9 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 				czyKomunikaty = true;
 				if (bazaDanych.liczbaPracownikowGet() == 0)
 				{
-					cout << endl << "Baza pracownikow jest pusta!" << endl;
+					powiadomienie("Baza pracownikow jest pusta!");
 					czySukces = false;
+					break;
 				}
 				cout << endl << "Podaj ID pracownika ktorego chcesz usunac: ";
 				string id;
@@ -231,6 +235,7 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					}
 					else
 					{
+						czyKomunikaty = false;
 						break;
 					}
 					
@@ -239,6 +244,13 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 			}
 			case 4:
 			{
+				czyKomunikaty = true;
+				if (bazaDanych.liczbaPracownikowGet() == 0)
+				{
+					powiadomienie("W bazie nie ma zadnych pracownikow!");
+					czySukces = false;
+					break;
+				}
 				cout << "\n[1]Wyszukiwanie za pomoca ID\n[2]Wyszukiwanie za pomoca nazwiska\n";
 				sprawdzanieWyboruUzytkownika(wybor, czySukces, 2);
 				int id = 0;
@@ -285,7 +297,6 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 					}
 
 				}
-				czyKomunikaty = true;
 				break;
 
 			}
@@ -426,6 +437,12 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 			}
 			case 12:
 			{
+				czyKomunikaty = true;
+				menedzer.usunWszystskiePlikiBazaDanych(czySukces);
+				break;
+			}
+			case 13:
+			{
 				czyKomunikaty = false;
 				cout << endl << "Czy przed opuszczeniem programu chcesz zapisac dokonane zmiany?\n[1]TAK\n[2]NIE\n";
 				int wybor;
@@ -476,7 +493,8 @@ void menu()
 		"[9]Wczytaj dane z pliku\n"
 		"[10]Wczytaj wybrany plik bazy danych\n"
 		"[11]Panel Dyrektora\n"
-		"[12]Zakoncz Program\n";
+		"[12]Usun wszystkie pliki utworzone przez program\n"
+		"[13]Zakoncz Program\n";
 }
 bool hasloPanelDyrektora(string& haslo, char tryb)
 {

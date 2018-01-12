@@ -1,5 +1,0 @@
-ID: 1
-Imie pracownika: Konrad
-Nazwisko pracownika: Czado
-Zarobki pracownika: 23
-Pozycja pracownika: Dyrektor

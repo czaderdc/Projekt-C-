@@ -25,8 +25,8 @@ public:
 	size_t liczbaPracownikowGet() const { return liczbaPracownikow; }
 	const Pracownik* pobierzPracownikow()const { return pracownicy; }
 	int sumaZarobkowPracownikow()const;
-	void realokujTablice(Pracownik&p, bool& failed);
-	void dodajPracownikaTablica(Pracownik &p, bool& failed);
+	void realokujTablice(Pracownik&p, bool& czySukces);
+	void dodajPracownikaTablica(Pracownik &p, bool& czySukces);
 	std::string przytnijOpis(std::string opis, std::string liniaTekstu, size_t& pozycja);
 	void usunPracownika(int IDpracownika);
 	int sumaZarobkowPracownikow();

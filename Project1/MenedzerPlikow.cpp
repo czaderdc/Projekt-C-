@@ -5,6 +5,7 @@
 #include <string.h>
 #include "MenedzerPlikow.h"
 #include "Komunikat.h"
+#include <stdio.h>
 
 MenedzerPlikow::MenedzerPlikow(std::string nazwaPliku, bool czyDodano, bool czyUsunieto) : dodanoPracownika(czyDodano), usunietoPracownika(czyUsunieto), nazwaPliku(nazwaPliku + ".txt")
 {
@@ -28,7 +29,7 @@ MenedzerPlikow::MenedzerPlikow(std::string nazwaPliku, bool czyDodano, bool czyU
 		{
 			Komunikat::powiadomUzytkownika("Plik utworzono poprawnie!");
 			Komunikat::powiadomUzytkownika("Twoj plik z baza pracownikow znajdziesz pod sciezka: ");
-		    Komunikat::powiadomUzytkownika(std::string(sciezka + "\\" + nazwaPliku + ".txt").c_str());
+			Komunikat::powiadomUzytkownika(std::string(sciezka + "\\" + nazwaPliku + ".txt").c_str());
 			plik.close();
 		}
 	}
@@ -102,6 +103,7 @@ void MenedzerPlikow::przytnijSciezke(std::string& sciezka, size_t dlugoscSciezki
 
 void MenedzerPlikow::wyswietlPlikiBazDanych()
 {
+	
 	for (auto& s : std::experimental::filesystem::directory_iterator(sciezka))
 	{
 		std::string n = s.path().string();
@@ -113,6 +115,12 @@ void MenedzerPlikow::wczytajWybranyPlikBazdyDanych(std::string& plik, BazaPracow
 {
 	Komunikat::powiadomUzytkownika("Oto lista dostepnych plikow z baza danych: ");
 	wyswietlPlikiBazDanych();
+	if (liczbaPlikow == 0)
+	{
+		Komunikat::powiadomUzytkownika("Nie ma dostepnych plikow z baza danych!");
+		czySukces = false;
+		return;
+	}
 	std::cout << std::endl << std::endl;
 	Komunikat::powiadomUzytkownika("Ktory plik chcesz wczytac? Podaj nazwe bez \".txt: ");
 	std::cin >> plik;
@@ -133,6 +141,38 @@ void MenedzerPlikow::wczytajWybranyPlikBazdyDanych(std::string& plik, BazaPracow
 	czySukces = false;
 	Komunikat::powiadomUzytkownika("Plik o podanej nazwie nie istnieje! ");
 	wczytajWybranyPlikBazdyDanych(nazwaPliku, baza, czySukces);
+}
+
+void MenedzerPlikow::usunWszystskiePlikiBazaDanych(bool& czySukces)
+{
+
+	if (pliki.size() == 0 && usunietoPliki)
+	{
+		Komunikat::powiadomUzytkownika("Pliki juz zostaly wczesniej usuniete!");
+		czySukces = false;
+	}
+	else if (pliki.size() == 0 && !usunietoPliki)
+	{
+		Komunikat::powiadomUzytkownika("Pliki nie zostaly jeszcze zaladowane do pamieci programu [10] w menu, albo nie ma ich wcale(niedokonczony program :(");
+		czySukces = false;
+	}
+
+	if (!czySukces)
+		return;
+
+	for (auto i = pliki.begin(); i!= pliki.end(); i++)
+	{
+		std::fstream((*i)).close();//zamykanie otwartego pliku aby go usunac
+		remove((*i).c_str()); //4 bo .txt length =4
+		
+		liczbaPlikow--;
+			
+		
+	}
+	
+	Komunikat::powiadomUzytkownika("Wszystkie utworzone pliki przez program zostaly usuniete poprawnie!");
+	czySukces = true;
+	usunietoPliki = true;
 }
 
 bool MenedzerPlikow::czyPlikIstnieje(const std::string& file) {

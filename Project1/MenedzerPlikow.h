@@ -11,6 +11,7 @@ private:
 	int liczbaPlikow;
 	bool dodanoPracownika;
 	bool usunietoPracownika;
+	bool usunietoPliki;
 	std::string nazwaPliku;
 	std::string sciezka;
 	std::string* tablicaPlikow = nullptr;//wczesniejsza wersja z wlasnym alokatorem
@@ -26,7 +27,9 @@ public:
 	void zapiszDoPliku(bool& czySukces, BazaPracownikow& baza);
 	void wczytajDanezPliku(BazaPracownikow& baza, bool& failed);
 	void wyswietlPlikiBazDanych();
-	void wczytajWybranyPlikBazdyDanych(std::string& nazwaPliku, BazaPracownikow& baza, bool& failed);
+	void wczytajWybranyPlikBazdyDanych(std::string& nazwaPliku, BazaPracownikow& baza, bool& czySukces);
+	void usunWszystskiePlikiBazaDanych(bool& czySukces);
+	void usunPlik(std::string& nazwaPliku);
 	~MenedzerPlikow();
 };
 
