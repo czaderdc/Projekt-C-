@@ -39,6 +39,7 @@ bool pierwszeUruchomienie = true;
 bool czySukces = false;
 bool czyKomunikaty = false;
 bool zalogowany = false;
+bool czyUsunietoPliki = false;
 int main()
 {
 	//system("color F0");
@@ -439,27 +440,42 @@ void PetlaGlownaProgramou(int &wybor, int &dodatkoweOpcje, BazaPracownikow &baza
 			{
 				czyKomunikaty = true;
 				menedzer.usunWszystskiePlikiBazaDanych(czySukces);
+				czyUsunietoPliki = true;
 				break;
 			}
 			case 13:
 			{
-				czyKomunikaty = false;
-				cout << endl << "Czy przed opuszczeniem programu chcesz zapisac dokonane zmiany?\n[1]TAK\n[2]NIE\n";
-				int wybor;
-
-				cin >> wybor;
-				if (wybor == 1)
+				if (!czyUsunietoPliki)
 				{
-					menedzer.zapiszDoPliku(czySukces, bazaDanych);
-				}
+					czyKomunikaty = false;
+					cout << endl << "Czy przed opuszczeniem programu chcesz zapisac dokonane zmiany?\n[1]TAK\n[2]NIE\n";
+					
 
-				if (bazaDanych.pobierzPracownikow() != nullptr)
+					sprawdzanieWyboruUzytkownika(wybor, czySukces, 2);
+					if (wybor == 1)
+					{
+						menedzer.zapiszDoPliku(czySukces, bazaDanych);
+					}
+
+
+					if (bazaDanych.pobierzPracownikow() != nullptr)
+					{
+						bazaDanych.~BazaPracownikow();
+					}
+					exit(0);
+
+					break;
+				}
+				else
 				{
-					bazaDanych.~BazaPracownikow();
-				}
-				exit(0);
+					if (bazaDanych.pobierzPracownikow() != nullptr)
+					{
+						bazaDanych.~BazaPracownikow();
+					}
+					exit(0);
 
-				break;
+					break;
+				}
 			}
 
 			}

@@ -29,7 +29,6 @@ public:
 	void wyswietlPlikiBazDanych();
 	void wczytajWybranyPlikBazdyDanych(std::string& nazwaPliku, BazaPracownikow& baza, bool& czySukces);
 	void usunWszystskiePlikiBazaDanych(bool& czySukces);
-	void usunPlik(std::string& nazwaPliku);
 	~MenedzerPlikow();
 };
 
